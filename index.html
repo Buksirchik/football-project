@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang='en'>
+  <head>
+    <meta charset='UTF-8' />
+    <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+    <link rel='preconnect' href='https://fonts.gstatic.com' />
+    <link
+      href='https://fonts.googleapis.com/css2?family=Open+Sans&display=swap'
+      rel='stylesheet'
+    />
+    <link rel='stylesheet' href='styles/style.css' />
+    <title>Football</title>
+  </head>
+
+  <body>
+    <header class='header'>
+      <nav class='navigation'>
+        <div class='menu-icon'></div>
+        <div class='overlay'></div>
+        <ul class='football-list'></ul>
+      </nav>
+    </header>
+
+    <main class='main-content'>
+      <section class='competition'>
+        <h1 class='title'></h1>
+        <table class='standings'>
+          <thead>
+            <tr class='standings__head'>
+              <th class='standings__head-cell'>Position</th>
+              <th class='standings__head-cell'>Club</th>
+              <th class='standings__head-cell'>Games</th>
+              <th class='standings__head-cell'>
+                <span class='desctop-cell'>Points</span>
+                <span class='mobile-cell'>Pts</span>
+              </th>
+              <th class='standings__head-cell'>
+                <span class='desctop-cell'>Won</span>
+                <span class='mobile-cell'>W</span>
+              </th>
+              <th class='standings__head-cell'>
+                <span class='desctop-cell'>Drawn</span>
+                <span class='mobile-cell'>D</span>
+              </th>
+              <th class='standings__head-cell'>
+                <span class='desctop-cell'>Lost</span>
+                <span class='mobile-cell'>L</span>
+              </th>
+              <th class='standings__head-cell'>
+                <abbr title='Golas For'>GF</abbr>
+              </th>
+              <th class='standings__head-cell'>
+                <abbr title='Goals Against'>GA</abbr>
+              </th>
+              <th class='standings__head-cell'>
+                <abbr title='Goal Difference'>GD</abbr>
+              </th>
+              <th class='standings__head-cell'>Form</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </section>
+
+      <section class='about-club'></section>
+      <div class='preloader'></div>
+    </main>
+
+    <script src='./js/index.js' type='module'></script>
+  </body>
+</html>
