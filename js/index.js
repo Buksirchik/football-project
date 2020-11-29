@@ -5,22 +5,24 @@ import {
   setTitleOfLeague,
   generateMatchesRow,
   showTeamInfo,
-} from './common.js';
+} from "./common.js";
 import {
   getCompetitionStandings,
   getCompetitions,
   getMatches,
   getTeam,
-} from './requests.js';
+} from "./requests.js";
 
-const menuBtn = document.querySelector('.menu-icon');
-const navigation = document.querySelector('.football-list');
-const preloader = document.querySelector('.preloader');
-const table = document.querySelector('.standings');
-const competitionBlock = document.querySelector('.competition');
-const aboutClub = document.querySelector('.about-club');
+const menuBtn = document.querySelector(".menu-icon");
+const navigation = document.querySelector(".football-list");
+const preloader = document.querySelector(".preloader");
+const table = document.querySelector(".standings");
+const competitionBlock = document.querySelector(".competition");
+const aboutClub = document.querySelector(".about-club");
+const overlay = document.querySelector(".overlay");
 
-menuBtn.addEventListener('click', toggleMenu);
+menuBtn.addEventListener("click", toggleMenu);
+overlay.addEventListener("click", () => menuBtn.click());
 
 // show сompetition standings
 getCompetitionStandings()
@@ -32,10 +34,11 @@ getCompetitionStandings()
     data.forEach(generateTableRow);
     setTitleOfLeague(nameOfStanding);
 
-    competitionBlock.style.display = 'block';
-    preloader.style.display = 'none';
+    competitionBlock.style.display = "block";
+    preloader.style.display = "none";
   })
   .catch((e) => {
+    alert("Server Error. Please, reload page")
     console.log(1, e);
   });
 
@@ -50,21 +53,25 @@ getCompetitions()
     data.forEach(generateMenuItem);
   })
   .catch((e) => {
+    alert("Server Error. Please, reload page")
     console.log(e.message);
   });
 
-navigation.addEventListener('click', navigationHandleClick);
+navigation.addEventListener("click", navigationHandleClick);
 
-table.addEventListener('click', tableHandleClick);
+table.addEventListener("click", tableHandleClick);
 
 function navigationHandleClick(e) {
   e.preventDefault();
-  const listRow = e.target.closest('.football-list__row');
+  const listRow = e.target.closest(".football-list__row");
   if (!listRow) return;
 
   // show preloader
-  competitionBlock.style.display = 'none';
-  preloader.style.display = 'block';
+  competitionBlock.style.display = "none";
+  preloader.style.display = "block";
+
+  // close menu
+  menuBtn.click();
 
   const newStandings = getCompetitionStandings(listRow.dataset.idCompetition);
 
@@ -75,35 +82,34 @@ function navigationHandleClick(e) {
       const data = response.standings[0].table;
 
       // delete past information
-      table.tBodies[0].innerHTML = '';
-      aboutClub.innerHTML = '';
-      
+      table.tBodies[0].innerHTML = "";
+      aboutClub.innerHTML = "";
+
       // create table rows
       data.forEach(generateTableRow);
       setTitleOfLeague(nameOfStanding);
 
       // hide preloader
-      competitionBlock.style.display = 'block';
-      preloader.style.display = 'none';
-
-      // close menu
-      menuBtn.click();
+      competitionBlock.style.display = "block";
+      preloader.style.display = "none";
     })
     .catch((e) => {
+      alert("Server Error. Please, reload page")
       console.log(e.message);
     });
 }
 
 function tableHandleClick(e) {
   e.preventDefault();
-  const target = e.target.closest('.football-team');
+  const target = e.target.closest(".football-team");
 
   if (!target) return;
   const idClub = target.dataset.idClub;
 
   // show preloader
-  competitionBlock.style.display = 'none';
-  preloader.style.display = 'block';
+  competitionBlock.style.display = "none";
+  aboutClub.style.display = "none";
+  preloader.style.display = "block";
 
   // add link
   aboutClub.innerHTML = `
@@ -111,12 +117,16 @@ function tableHandleClick(e) {
     &larr; Back
   </a>`;
 
+  const backLink = aboutClub.querySelector(".about-club__link");
+  backLink.addEventListener("click", linkHandleClick);
+
   getTeam(idClub)
     .then((response) => response.json())
     .then((response) => {
       showTeamInfo(response);
     })
     .catch((e) => {
+      alert("Server Error. Please, reload page")
       console.log(e.message);
     });
 
@@ -124,8 +134,8 @@ function tableHandleClick(e) {
     .then((response) => response.json())
     .then((response) => {
       const matches = response.matches;
-      let scheduleBlock = document.createElement('div');
-      scheduleBlock.classList.add('schedule');
+      let scheduleBlock = document.createElement("div");
+      scheduleBlock.classList.add("schedule");
       scheduleBlock.innerHTML = `
       <h3 class='schedule__title'>Schedule</h3>`;
       aboutClub.append(scheduleBlock);
@@ -134,9 +144,17 @@ function tableHandleClick(e) {
       matches.forEach(generateMatchesRow);
 
       // hide preloader
-      preloader.style.display = 'none';
+      aboutClub.style.display = "block";
+      preloader.style.display = "none";
     })
     .catch((e) => {
+      alert("Server Error. Please, reload page")
       console.log(e.message);
     });
+}
+
+function linkHandleClick(e) {
+  e.preventDefault();
+  competitionBlock.style.display = 'block'
+  aboutClub.style.display = 'none'
 }
