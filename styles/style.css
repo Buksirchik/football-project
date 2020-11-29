@@ -64,7 +64,7 @@ body {
   left: -100%;
   z-index: 2;
   transition: 0.3s;
-  overflow: scroll;
+  overflow: auto;
 }
 
 .football-list.open {
